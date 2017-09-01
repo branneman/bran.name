@@ -1,0 +1,8 @@
+# IDE's
+.idea
+.project
+
+# Node.js App
+dist
+node_modules
+.env

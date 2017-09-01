@@ -1,0 +1,10 @@
+:root {
+
+    --fontStack: serif;
+
+    --colorOffBlack: #333;
+
+    --bodyMinWidth: 768px;
+    --headerHeight: 3.5em;
+
+}
