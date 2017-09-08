@@ -5,6 +5,7 @@ const fs = require('fs');
 const glob = require('glob').sync;
 const gulp = require('gulp');
 const httpServer = require('http-server');
+const mime = require('mime');
 const mkdirp = require('mkdirp').sync;
 const nunjucks = require('nunjucks');
 const path = require('path');
@@ -111,7 +112,8 @@ gulp.task('_upload', () => {
 
         s3.putObject({
             Body: fs.readFileSync(file, 'utf8'),
-            Key: path.relative(config.dist, file)
+            Key: path.relative(config.dist, file),
+            ContentType: mime.lookup(file)
         }, (err, data) => err ? reject(err) : resolve(data));
 
     });
