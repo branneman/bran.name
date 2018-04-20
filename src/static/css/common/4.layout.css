@@ -1,0 +1,11 @@
+.layout__outer {
+  padding: 1em;
+  @media (min-width: 50em) {
+    padding: 2em;
+  }
+}
+
+.layout__inner {
+  max-width: 50em;
+  margin: 0 auto;
+}

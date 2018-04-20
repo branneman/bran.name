@@ -1,0 +1,23 @@
+{% set links = [
+  { url: 'https://github.com/branneman', label: 'Github' },
+  { url: 'https://gist.github.com/branneman', label: 'Gist' },
+  { url: 'http://www.reddit.com/user/branneman/', label: 'Reddit' },
+  { url: 'https://pinboard.in/u:branneman/', label: 'Pinboard' },
+  { url: 'http://www.last.fm/user/branneman', label: 'Last.fm' },
+  { url: 'http://www.linkedin.com/in/branvandermeer', label: 'LinkedIn' }
+] %}
+
+{% macro createLink(link) %}
+  <li><a target="_blank" rel="me" href="{{ link.url }}" title="Bran van der Meer">{{ link.label }}</a></li>
+{% endmacro %}
+
+<aside>
+  <div>
+    <h3>Me elsewhere</h3>
+    <ul>
+      {% for link in links %}
+        {{ createLink(link) }}
+      {% endfor %}
+    </ul>
+  </div>
+</aside>

@@ -1,0 +1,16 @@
+body {
+  font-family: var(--fontStackBody);
+  font-weight: 300;
+}
+strong {
+  font-weight: 500;
+}
+em {
+  font-style: italic;
+}
+
+h1,
+h2 {
+  font-family: var(--fontStackHeader);
+  font-weight: 500;
+}

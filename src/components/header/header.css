@@ -1,0 +1,7 @@
+.header__site-title {
+  font-family: var(--fontStackHeader);
+  font-weight: 500;
+  font-size: 2em;
+  text-decoration: none;
+  color: var(--colorOffBlack);
+}

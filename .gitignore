@@ -1,8 +1,9 @@
 # IDE's
+.vscode
 .idea
 .project
 
-# Node.js App
+# App
 dist
 node_modules
 .env

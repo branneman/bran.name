@@ -1,1 +1,12 @@
-<h1>{{ data.fields.title }}</h1>
+{% extends './layout/default.njk' %}
+{% set metaTitle = data.fields.title %}
+{% set metaDescription = data.fields.description %}
+
+{% block main %}
+  <h1>{{ data.fields.title }}</h1>
+  <small>
+    <time itemprop="dateCreated" datetime="{{ data.fields.published }}">{{ data.fields.published }}</time>
+    by {{ data.fields.author }}
+  </small>
+  {{ data.fields.text }}
+{% endblock %}

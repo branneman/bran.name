@@ -1,0 +1,9 @@
+:root {
+  --colorOffBlack: #333;
+
+  --bodyMinWidth: 768px;
+  --headerHeight: 3.5em;
+
+  --fontStackHeader: 'IBM Plex Serif', serif;
+  --fontStackBody: 'IBM Plex Sans', serif;
+}

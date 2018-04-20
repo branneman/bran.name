@@ -1,0 +1,20 @@
+{% extends '../layout/default.njk' %}
+{% set metaTitle = 'Bran van der Meer' %}
+{% set metaDesc = "Bran's website. Programming articles and my portfolio/résumé. My internet nicknames/aliasses are branneman and branmovic" %}
+
+{% block main %}
+  <h1>Hi there!</h1>
+  <p itemscope itemtype="http://data-vocabulary.org/Person">
+    I’m the website of <span itemprop="name">Bran van der Meer</span>, internet geek and builder
+    of the web, living in <span itemprop="locality">Rotterdam, Netherlands</span>. I tend to make
+    use of the nicknames <span itemprop="nickname">branneman</span> and <span itemprop="nickname">branmovic</span>
+    all around the web, if you come across them, that’s probably me.
+  </p>
+
+  <h2>Articles:</h2>
+  <ol>
+    {% for article in data.article %}
+      <li><a href="/article/{{ article.fields.url }}.html">{{ article.fields.title }}</a></li>
+    {% endfor %}
+  </ol>
+{% endblock %}
