@@ -7,17 +7,15 @@
   { url: 'http://www.linkedin.com/in/branvandermeer', label: 'LinkedIn' }
 ] %}
 
-{% macro createLink(link) %}
-  <li><a target="_blank" rel="me" href="{{ link.url }}" title="Bran van der Meer">{{ link.label }}</a></li>
-{% endmacro %}
-
 <aside>
-  <div>
-    <h3>Me elsewhere</h3>
-    <ul>
-      {% for link in links %}
-        {{ createLink(link) }}
-      {% endfor %}
-    </ul>
-  </div>
+  <h3>Me elsewhere</h3>
+  <ul>
+    {% for link in links %}
+      <li>
+        <a target="_blank" rel="me" href="{{ link.url }}" title="Bran van der Meer">
+          {{ link.label }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
 </aside>
