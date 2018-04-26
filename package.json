@@ -1,8 +1,7 @@
 {
   "name": "bran.name",
   "version": "1.0.0",
-  "description":
-    "The sourcecode for the https://bran.name/ website (Static site implementation)",
+  "description": "The sourcecode for the https://bran.name/ website (Static site implementation)",
   "scripts": {
     "start": "gulp dev",
     "release": "gulp release"
@@ -14,8 +13,15 @@
   "author": "Bran van der Meer <branmovic@gmail.com>",
   "license": "ISC",
   "babel": {
-    "presets": ["es2017", "es2016", "es2015"],
-    "plugins": ["transform-decorators-legacy", "transform-class-properties"]
+    "presets": [
+      "es2017",
+      "es2016",
+      "es2015"
+    ],
+    "plugins": [
+      "transform-decorators-legacy",
+      "transform-class-properties"
+    ]
   },
   "devDependencies": {
     "aws-sdk": "^2.104.0",
@@ -25,12 +31,11 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "http-server": "^0.10.0",
     "mime": "^1.4.0",
-    "mkdirp": "^0.5.1",
     "nunjucks": "^3.0.1",
     "nunjucks-date-filter": "^0.1.1",
     "postcss": "^6.0.10",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^10.0.0",
-    "rimraf": "^2.6.1"
+    "shelljs": "^0.8.1"
   }
 }

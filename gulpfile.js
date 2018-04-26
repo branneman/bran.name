@@ -7,13 +7,12 @@ const glob = require('glob').sync
 const gulp = require('gulp')
 const httpServer = require('http-server')
 const mime = require('mime')
-const mkdirp = require('mkdirp').sync
 const nunjucks = require('nunjucks')
 const path = require('path')
 const postcss = require('postcss')
 const postcssCssnext = require('postcss-cssnext')
 const postcssImport = require('postcss-import')
-const rimraf = require('rimraf').sync
+const shell = require('shelljs')
 
 const nunjucksEnv = new nunjucks.Environment([
   new nunjucks.FileSystemLoader(__dirname, { noCache: true })
@@ -54,7 +53,7 @@ const config = Object.freeze({
  * @private
  */
 gulp.task('_clean', cb => {
-  rimraf(config.dist)
+  shell.rm('-rf', config.dist)
   cb()
 })
 
@@ -63,8 +62,8 @@ gulp.task('_clean', cb => {
  * @private
  */
 gulp.task('_create_dist', cb => {
-  mkdirp(config.dist)
-  mkdirp(`${config.dist}/static/css`)
+  shell.mkdir('-p', config.dist)
+  shell.mkdir('-p', `${config.dist}/static/css`)
   cb()
 })
 
@@ -151,7 +150,7 @@ gulp.task('_render-templates', cb => {
     const distDir = `${config.dist}`
     const distFile = data => `${distDir}/${data.fields.url}.html`
 
-    mkdirp(distDir)
+    shell.mkdir('-p', distDir)
 
     contentTypes[contentType].forEach(data =>
       fs.writeFileSync(distFile(data), render(srcFile, { data }), 'utf8')
@@ -237,6 +236,15 @@ gulp.task('_compile-css', () => {
 })
 
 /**
+ * Sub-task implementation: Copy images
+ * @private
+ */
+gulp.task('_copy-images', cb => {
+  shell.cp('-R', `${config.src}/static/img`, `${config.dist}/static`)
+  cb()
+})
+
+/**
  * Sub-task: HTTP Server for development
  * @private
  */
@@ -260,6 +268,7 @@ gulp.task(
     '_render-templates',
     '_render-pages',
     '_compile-css',
+    '_copy-images',
     '_remove-temporary-files'
   )
 )
