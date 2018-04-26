@@ -21,12 +21,9 @@
 
     <main class="layout__inner">
       {%- block main %}{% endblock -%}
-      {%- block aside %}
-        {% include '../../components/aside/aside.njk' %}
-      {% endblock -%}
     </main>
 
-    <footer class="layout__inner layout__footer">
+    <footer class="layout__inner footer">
       {%- block footer %}
         {% include '../../components/footer/footer.njk' %}
       {% endblock -%}
