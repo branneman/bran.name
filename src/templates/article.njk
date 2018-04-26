@@ -4,9 +4,9 @@
 
 {% block main %}
   <h1>{{ data.fields.title }}</h1>
-  <small>
-    <time itemprop="dateCreated" datetime="{{ data.fields.published }}">{{ data.fields.published }}</time>
+  <p><small>
+    Published <time itemprop="dateCreated" datetime="{{ data.fields.published }}">{{ data.fields.published }}</time>
     by {{ data.fields.author }}
-  </small>
-  {{ data.fields.text }}
+  </small></p>
+  {{ data.fields.text | safe }}
 {% endblock %}
