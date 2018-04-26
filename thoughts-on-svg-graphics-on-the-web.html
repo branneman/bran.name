@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Thoughts on SVG Graphics on the Web</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">Bran van der Meer</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>Thoughts on SVG Graphics on the Web</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2013-02-22T00:00+01:00">2013-02-21</time>
+  </small></p>
+  <p>So we all want HiDPI graphics on the web now, Apple started it all with Retina screens, and now most high-end Android and Windows devices have a 300+ PPI as well. With this, comes of course the problem of HiDPI graphics. Nobody wants 72 DPI graphics on their 300+ PPI screen.
+
+And to make it interesting, I think most of you have to worry about IE 7 & 8 support, at least I do. It’s what makes our jobs interesting, right?
+
+Translating this situation to the web, there are several ways to go. One of the easy ways is to create images that are twice as big, which generates 4 times the size. If you’ve got a photo, you might be forced into this solution. But we are talking about icons. For those kind of graphics, you could work with a library like Raphaël. Say your icon is suitable for it, this will get it on screen in all required browsers in no time. But, they do have performance drawback. Suddenly your visitors have to download an extra javascript library. And depending on whether you put it into head or body, either your page will load slower, or your page will become visible without the icons, which will appear later. I don’t want all that.
+
+</p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Sourcecode available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">Github</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>

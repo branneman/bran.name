@@ -1,0 +1,99 @@
+:root {
+}
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+
+  color: #334;
+}
+body {
+  font-family: 'IBM Plex Sans', serif;
+  font-weight: 300;
+  line-height: 1.4;
+}
+strong {
+  font-weight: 500;
+}
+em {
+  font-style: italic;
+}
+p.small {
+  margin-top: -1em;
+  font-style: italic;
+}
+a,
+a:hover,
+a:active {
+  color: inherit;
+}
+h1,
+h2,
+h3 {
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 500;
+  line-height: 1.2;
+
+  font-size: 1.6em;
+}
+@media (min-width: 40em) {
+  h1,
+h2,
+h3 {
+    font-size: 2em;
+  }
+}
+.layout__inner {
+  max-width: 40em;
+  font-size: 1.2em;
+}
+@media (min-width: 40em) {
+  .layout__inner {
+    line-height: 1.6;
+  }
+}
+.layout__outer {
+  padding: 1em;
+}
+@media (min-width: 40em) {
+  .layout__outer {
+    padding: 2em;
+  }
+}
+.layout__inner {
+  margin: 0 auto;
+}
+.header {
+  padding-bottom: 0.5em;
+  border-bottom: 5px dotted #334
+}
+.page-article .header {
+  color: #99a;
+  border-bottom-color: #99a;
+}
+.header__site-title {
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 500;
+  font-size: 1.4em;
+  text-decoration: none;
+  color: #334
+}
+.page-article .header__site-title {
+  color: #99a;
+}
+.footer {
+  margin-top: 2em;
+  padding-top: 0.5em;
+  border-top: 4px dotted #334
+}
+.page-article .footer {
+  color: #99a;
+  border-top-color: #99a;
+}
+.footer p {
+  margin: 0;
+  font-size: smaller;
+}
