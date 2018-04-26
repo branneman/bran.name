@@ -1,3 +1,7 @@
+.header {
+  padding-bottom: 0.5em;
+  border-bottom: 5px dotted #333;
+}
 .header__site-title {
   font-family: var(--fontStackHeader);
   font-weight: 500;
