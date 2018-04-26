@@ -148,7 +148,7 @@ gulp.task('_render-templates', cb => {
     if (!contentTypes.hasOwnProperty(contentType)) continue
 
     const srcFile = `${config.src}/templates/${contentType}.njk`
-    const distDir = `${config.dist}/${contentType}`
+    const distDir = `${config.dist}`
     const distFile = data => `${distDir}/${data.fields.url}.html`
 
     mkdirp(distDir)
