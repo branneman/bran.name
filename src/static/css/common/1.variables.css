@@ -1,8 +1,9 @@
 :root {
-  --colorOffBlack: #333;
+  --colorOffBlack: #334;
+  --colorInactive: #99a;
 
-  --bodyMinWidth: 768px;
-  --headerHeight: 3.5em;
+  --textMaxWidth: 40em;
+  @custom-media --medium-viewport (min-width: 40em);
 
   --fontStackHeader: 'IBM Plex Serif', serif;
   --fontStackBody: 'IBM Plex Sans', serif;

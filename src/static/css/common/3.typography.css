@@ -1,16 +1,43 @@
 body {
   font-family: var(--fontStackBody);
   font-weight: 300;
+  line-height: 1.4;
 }
+
 strong {
   font-weight: 500;
 }
 em {
   font-style: italic;
 }
+p.small {
+  margin-top: -1em;
+  font-style: italic;
+}
+a,
+a:hover,
+a:active {
+  color: inherit;
+}
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--fontStackHeader);
   font-weight: 500;
+  line-height: 1.2;
+
+  font-size: 1.6em;
+  @media (--medium-viewport) {
+    font-size: 2em;
+  }
+}
+
+.layout__inner {
+  max-width: var(--textMaxWidth);
+  font-size: 1.2em;
+
+  @media (--medium-viewport) {
+    line-height: 1.6;
+  }
 }

@@ -1,11 +1,21 @@
 .header {
   padding-bottom: 0.5em;
-  border-bottom: 5px dotted #333;
+  border-bottom: 5px dotted var(--colorOffBlack);
+
+  @nest .page-article & {
+    color: var(--colorInactive);
+    border-bottom-color: var(--colorInactive);
+  }
 }
+
 .header__site-title {
   font-family: var(--fontStackHeader);
   font-weight: 500;
-  font-size: 2em;
+  font-size: 1.4em;
   text-decoration: none;
   color: var(--colorOffBlack);
+
+  @nest .page-article & {
+    color: var(--colorInactive);
+  }
 }

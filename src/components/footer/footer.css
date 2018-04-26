@@ -1,5 +1,15 @@
 .footer {
   margin-top: 2em;
   padding-top: 0.5em;
-  border-top: 4px dotted #333;
+  border-top: 4px dotted var(--colorOffBlack);
+
+  @nest .page-article & {
+    color: var(--colorInactive);
+    border-top-color: var(--colorInactive);
+  }
+
+  & p {
+    margin: 0;
+    font-size: smaller;
+  }
 }

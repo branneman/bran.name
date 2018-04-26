@@ -1,12 +1,12 @@
 {% extends './layout/default.njk' %}
 {% set metaTitle = data.fields.title %}
 {% set metaDescription = data.fields.description %}
+{% set bodyClass = 'page-article' %}
 
 {% block main %}
   <h1>{{ data.fields.title }}</h1>
-  <p><small>
-    Published <time itemprop="dateCreated" datetime="{{ data.fields.published }}">{{ data.fields.published }}</time>
-    by {{ data.fields.author }}
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="{{ data.fields.published }}">{{ data.fields.published | date('YYYY-MM-DD') }}</time>
   </small></p>
-  {{ data.fields.text | safe }}
+  <p>{{ data.fields.text | safe }}</p>
 {% endblock %}
