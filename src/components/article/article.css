@@ -1,0 +1,68 @@
+.es2015-babel6-features {
+  width: 100%;
+  line-height: 1.4;
+  font-size: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-bottom: 1px solid #666;
+
+  & th,
+  & td {
+    padding: 3px;
+  }
+
+  & th {
+    text-align: left;
+  }
+
+  & td {
+    border-top: 1px solid #eee;
+  }
+
+  & a {
+    color: #3c78d8;
+    text-decoration: none;
+  }
+
+  & a:hover,
+  & a:focus {
+    text-decoration: underline;
+  }
+
+  & .section td {
+    border-top: 1px solid #666;
+  }
+
+  & .feature {
+    width: 110px;
+    text-align: center;
+  }
+
+  & .feature,
+  & .yes,
+  & .maybe,
+  & .no,
+  & .not {
+    text-align: center;
+  }
+
+  & .yes {
+    background: #d9ead3;
+    color: #6aa84f;
+  }
+
+  & .maybe {
+    background: #fff2cc;
+    color: #f1c232;
+  }
+
+  & .no {
+    background: #eee;
+    color: #bbb;
+  }
+
+  & .not {
+    background: #f4cccc;
+    color: #e06666;
+  }
+}
