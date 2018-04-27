@@ -56,6 +56,7 @@ gulp.task('_clean', cb => {
 gulp.task('_create_dist', cb => {
   shell.mkdir('-p', config.dist)
   shell.mkdir('-p', `${config.dist}/static/css`)
+  shell.cp(`${__dirname}/CNAME`, config.dist)
   cb()
 })
 
