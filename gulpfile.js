@@ -74,7 +74,9 @@ gulp.task('_download-content', () => {
   const getContentTypeId = item => item.sys.id
   const extractEntry = id => ({ items }) => ({ contentType: id, items })
   const getEntriesByType = id =>
-    client.getEntries({ content_type: id }).then(extractEntry(id))
+    client
+      .getEntries({ content_type: id, order: '-fields.published' })
+      .then(extractEntry(id))
   const getAllContentTypes = items =>
     Promise.all(items.map(getContentTypeId).map(getEntriesByType))
   const writeJSONData = filename => data =>
