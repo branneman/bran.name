@@ -1,0 +1,22 @@
+.aside__header {
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid var(--colorInactive);
+  padding-bottom: 0.25em;
+}
+
+.aside__list {
+  margin: 0;
+  padding: 0;
+}
+
+.aside__listitem {
+  display: inline-block;
+  list-style: none;
+
+  &:before {
+    content: ' |';
+  }
+  &:first-child:before {
+    content: none;
+  }
+}

@@ -1,0 +1,18 @@
+.publications__header {
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid var(--colorInactive);
+  padding-bottom: 0.25em;
+}
+
+.publications__list {
+  margin: 0;
+  padding: 0;
+}
+
+.publications__list li {
+  list-style: none;
+}
+
+.publications__pubdate {
+  color: var(--colorInactive);
+}

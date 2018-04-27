@@ -1,6 +1,6 @@
 :root {
-  --colorOffBlack: #334;
-  --colorInactive: #99a;
+  --colorOffBlack: #446;
+  --colorInactive: #aac;
 
   --textMaxWidth: 40em;
   @custom-media --medium-viewport (min-width: 40em);

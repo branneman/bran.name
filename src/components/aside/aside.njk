@@ -7,15 +7,15 @@
   { url: 'http://www.linkedin.com/in/branvandermeer', label: 'LinkedIn' }
 ] %}
 
-<aside>
-  <h3>Me elsewhere</h3>
-  <ul>
+<aside class="aside">
+  <h3 class="aside__header">Me elsewhere</h3>
+  <ol class="aside__list">
     {% for link in links %}
-      <li>
+      <li class="aside__listitem">
         <a target="_blank" rel="me" href="{{ link.url }}" title="Bran van der Meer">
           {{ link.label }}
         </a>
       </li>
     {% endfor %}
-  </ul>
+  </ol>
 </aside>

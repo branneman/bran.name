@@ -10,12 +10,6 @@
     all around the web, if you come across them, that’s probably me.
   </p>
 
-  <h2>Publications:</h2>
-  <ol>
-    {% for article in data.article %}
-      <li><a href="/{{ article.fields.url }}.html">{{ article.fields.title }}</a></li>
-    {% endfor %}
-  </ol>
-
+  {% include '../../components/publications/publications.njk' %}
   {% include '../../components/aside/aside.njk' %}
 {% endblock %}

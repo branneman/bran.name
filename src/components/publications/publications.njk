@@ -1,0 +1,11 @@
+<section class="publications">
+  <h2 class="publications__header">Publications</h2>
+  <ol class="publications__list">
+    {% for article in data.article %}
+      <li>
+        <em class="publications__pubdate">{{ article.fields.published | date('YYYY-MM-DD') }}</em>
+        <a href="/{{ article.fields.url }}.html">{{ article.fields.title }}</a>
+      </li>
+    {% endfor %}
+  </ol>
+</section>
