@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Let&#39;s not have a JavaScript library anymore</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>Let&#39;s not have a JavaScript library anymore</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2012-03-30T10:00+02:00">2012-03-30</time>
+  </small></p>
+  <p><p>JavaScript libraries bring a lot of features, and a lot of footprint. Most developers don't even use 10% of all the features most libraries have to offer. So maybe we should get rid of the library then?</p>
+
+<p>When you never start using (or stop using) a JavaScript library, you'll save on bandwidth and performance by definition and you'll eliminate a lot of dead code in the process. You'll also lose an important dependency on code that's not "yours". But there are some trade-offs, like the steep learning curve for starting developers, most of them "know jQuery", but no real JavaScript. And you'll miss out on possible plugins and community support.</p>
+
+<p>The moment you stop using a library and start developing something complex from a JavaScript perspective, you'll start running into problems you have to solve differently this time. The most common features used from libraries include the selector engine, event binding, DOM traversing/manipulation and http requests. And maybe animations, but I'm not going into that one in this article, it's already becoming a slight bit lengthy.</p>
+
+<p>Anyway, I think it's a great idea to get those missing features back by including <a href="http://remysharp.com/2010/10/08/what-is-a-polyfill/">polyfills</a> in your project. Over time, less and less of your code will be executed and it'll still be working! Isn't it great?</p>
+
+<p>One more thing before I'll dive deep: I would only advise those of you who consider themselves already "more than just jQuery developers" and have some experience with <a href="http://en.wikipedia.org/wiki/Software_design_pattern">design patterns</a> to try this, it's easy to make a mess when you don't have a clue what you're doing.</p>
+
+<h2>Selector Engine</h2>
+In selector engine land, <a href="http://sizzlejs.com/">Sizzle</a> is the most promising at this moment, it tries to be the universal engine for all libraries, and it got embedded in a few big ones already (jQuery/Dojo/Prototype). But there are lots of selector engines, and some JavaScript libraries even introduced their own, I'm not going into all of them. For more selector engines, see <a href="http://microjs.com/#css">microjs</a>.</p>
+
+<p>So those engines are a lot of code, which we <a href="http://caniuse.com/#search=querySelector">only need for IE &lt;= 7</a>. Somehow we'll have to include it for IE &lt;= 7, but not for all the other browsers. Polyfill to the rescue! A while ago when I needed exactly that, it wasn't there yet, so I put my own polyfill with Sizzle together, you can find it <a href="https://gist.github.com/1200441">as a Gist on Github</a>. It's really only the engine with a wrapping function around it, if the spec is already implemented by the current browser, it doesn't do anything at all, but if it isn't implemented, it polyfills querySelector() and querySelectorAll() with Sizzle immediately behind the functions.</p>
+
+<h2><strong>Events</h2>
+Events are more easy, you can just implement those yourself, or at least you don't have to steal a lot of code. There are of course 2 event models, W3C's and Microsoft's. The most simple solution would be to take <a href="http://ejohn.org/projects/flexible-javascript-events/">John Resig's addEvent()</a>, it'll most likely suffice. And I wouldn't even include removeEvent() until you need it, I very rarely use it.</p>
+
+<p>And depending on whether you will use it or not, you might miss custom events as well. This boils down to implementing the <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer pattern</a> in JavaScript. You can build one around the addEvent() you just added, or write seperate functions for it, whatever you like. I slightly prefer to keep those things together, since its almost the same anyway. For a plain observer pattern I'm going to link to <a href="http://www.dustindiaz.com/javascript-observer-class/">Dustin Diaz' Observer</a>, it's a clear and simple implementation.</p>
+
+<h2>DOM</h2>
+Depending on how much you started using the traversing functions from your library (<a href="http://api.jquery.com/next/">next</a>, <a href="http://api.jquery.com/prev/">prev</a>, <a href="http://api.jquery.com/parent/">parent</a>), you could start working manually with the methods and properties of <a href="http://reference.sitepoint.com/javascript/Node">Node</a>, <a href="http://reference.sitepoint.com/javascript/Element">Element</a> and <a href="http://reference.sitepoint.com/javascript/Document">Document</a>. That should get you everywhere you want. If you'd rather have those shortcut methods back, have another look around on <a href="http://microjs.com/#dom">microjs</a>, there's a lot over there.</p>
+
+<p>Sticking to the jQuery example, in the case of manipulation, most methods used will probably be <a href="http://api.jquery.com/attr/">attr</a>, <a href="http://api.jquery.com/html/">html</a>, <a href="http://api.jquery.com/val/">val</a>, and maybe some <a href="http://api.jquery.com/append/">append</a> or <a href="http://api.jquery.com/prepend/">prepend</a>. These are easily replaceable by methods of those same Node/Element/Document objects. But! Those DOM objects are really buggy implemented in almost any browser, and that's what your library is fixing, abstracting it away for you. You should try working with the browser objects, and see if you can handle the bugs. If it's not that big a problem for you, stick with it! If it is, maybe you should plug-and-play a micro library in that does the <a href="http://microjs.com/#dom">DOM stuff</a> for you.</p>
+
+<p>You might also not be willing to wait for window.onload(), and prefer the faster document.ready() and other equivalents. Again you have several options here, but I'm going to steer you to the fastest and smallest one I know of, <a href="https://github.com/ded/domready/blob/master/ready.js">Dustin Diaz's ready.js</a>.</p>
+
+<h2>HTTP Requests</h2>
+These are quite similar to events, there's W3C's and Microsoft's object. Luckily, we can forget about the Microsoft one, since from IE7 and up, W3C's <a href="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHttpRequest</a> object is implemented in IE. This object is really easy to use, so I'd advise to use it directly. If you're really going to use it a lot, you could wrap it with a small function to make it slightly easier to use, but we're talking syntaxical sugar there. You could also go see <a href="http://microjs.com/#ajax">microjs</a> again if you're lazy.</p>
+
+<p>And make sure to structure your code nicely to keep it all maintainable. It's more important now your code base will be bigger. I think my next article might be about that.</p>
+
+<p>And as a closing note I would love to hear from all the problems everyone bumped into when trying this, and what solutions you picked! Cheerio!</p></p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Sourcecode available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">Github</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>

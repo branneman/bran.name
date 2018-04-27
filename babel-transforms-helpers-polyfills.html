@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Babel transforms, helpers and polyfills</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>Babel transforms, helpers and polyfills</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2016-03-10T00:00+02:00">2016-03-09</time>
+  </small></p>
+  <p><p>Configuring Babel 6 can be a little daunting for starters. Depending on what exact ES2015 features you are trying to transpile, you'll need transforms (plugins/presets), helpers, polyfills or a combination.</p>
+
+<p>ES2015 consists of syntactic sugar, new internals and a revised standard&nbsp;library. In general you won't need to transform features that are standard&nbsp;library, but you will need to polyfill those. The syntactic&nbsp;sugar can mostly be transformed without the polyfill, but sometimes babel will need helpers for them.</p>
+
+<p>The helpers can be automatically inlined during transforms (default behaviour), delivered separately as a <a href="https://web.archive.org/web/20161017113720/http://github.com/thejameskyle/babel-handbook/blob/master/translations/en/user-handbook.md#babel-runtime">runtime</a>, or you can deliver them yourself with <a href="https://web.archive.org/web/20161017113720/http://www.npmjs.com/package/babel-plugin-external-helpers-2">babel-plugin-external-helpers-2</a>. It's up to you whether you want to use the entire <a href="https://web.archive.org/web/20161017113720/http://github.com/thejameskyle/babel-handbook/blob/master/translations/en/user-handbook.md#babel-polyfill">babel-polyfill</a> (about 90kb) package, or include separate polyfills. Actually, any working polyfill will do.</p>
+
+<p>The table below specifies the requirements for all ES2015 features. List of features taken from <a href="https://web.archive.org/web/20161017113720/http://es6-features.org/">es6-features.org</a>.</p>
+
+<table class="es2015-babel6-features">
+  <thead>
+    <tr>
+      <th class="">Feature</th>
+      <th class="">Sub-feature</th>
+      <th class="feature">Transform</th>
+      <th class="feature">Helpers</th>
+      <th class="feature">Polyfill</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="section">
+      <td>Constants</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#Constants">Constants</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Scoping</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#BlockScopedVariables">Block-Scoped Variables</a></td>
+      <td class="yes">required</td>
+      <td class="maybe">optional</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#BlockScopedFunctions">Block-Scoped Functions</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Arrow Functions</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ExpressionBodies">Expression Bodies</a></td>
+      <td class="yes">required</td>
+      <td class="maybe">optional</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#StatementBodies">Statement Bodies</a></td>
+      <td class="yes">required</td>
+      <td class="maybe">optional</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#Lexicalthis">Lexical this</a></td>
+      <td class="yes">required</td>
+      <td class="maybe">optional</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Extended Parameter Handling</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#DefaultParameterValues">Default Parameter Values</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#RestParameter">Rest Parameter</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#SpreadOperator">Spread Operator</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Template Literals</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#StringInterpolation">String Interpolation</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#CustomInterpolation">Custom Interpolation</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#RawStringAccess">Raw String Access</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Extended Literals</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#BinaryOctalLiteral">Binary &amp; Octal Literal</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#UnicodeStringRegExpLiteral">Unicode String &amp; RegExp Literal</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Enhanced Regular Expression</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#RegularExpressionStickyMatching">Regular Expression Sticky Matching</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Enhanced Object Properties</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#PropertyShorthand">Property Shorthand</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ComputedPropertyNames">Computed Property Names</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#MethodProperties">Method Properties</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Destructuring Assignment</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ArrayMatching">Array Matching</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ObjectMatchingShorthandNotation">Object Matching, Shorthand Notation</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ObjectMatchingDeepMatching">Object Matching, Deep Matching</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ParameterContextMatching">Parameter Context Matching</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#FailSoftDestructuring">Fail-Soft Destructuring</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Modules</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ValueExportImport">Value Export/Import</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#DefaultWildcard">Default &amp; Wildcard</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Classes</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ClassDefinition">Class Definition</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ClassInheritance">Class Inheritance</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ClassInheritanceFromExpressions">Class Inheritance, From Expressions</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#BaseClassAccess">Base Class Access</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#StaticMembers">Static Members</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GetterSetter">Getter/Setter</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+    </tr>
+    <tr class="section">
+      <td>Symbol Type</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#SymbolType">Symbol Type</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GlobalSymbols">Global Symbols</a></td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Iterators</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#IteratorForOfOperator">Iterator &amp; For-Of Operator</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Generators</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GeneratorFunctionDirectUse">Generator Function, Direct Use</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GeneratorFunctionIteratorProtocol">Generator Function, Iterator Protocol</a></td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GeneratorMatching">Generator Matching</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#GeneratorMethods">Generator Methods</a></td>
+      <td class="yes">required</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Map/Set &amp; WeakMap/WeakSet</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#SetDataStructure">Set Data-Structure</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#MapDataStructure">Map Data-Structure</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#WeakLinkDataStructures">Weak-Link Data-Structures</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Typed Arrays</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#TypedArrays">Typed Arrays</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>New Built-In Methods</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ObjectPropertyAssignment">Object Property Assignment</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#ArrayElementFinding">Array Element Finding</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#StringRepeating">String Repeating</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#StringSearching">String Searching</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberTypeChecking">Number Type Checking</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberSafetyChecking">Number Safety Checking</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberComparison">Number Comparison</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberTruncation">Number Truncation</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberSignDetermination">Number Sign Determination</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Promises</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#PromiseUsage">Promise Usage</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#PromiseCombination">Promise Combination</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Meta-Programming</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#Proxying">Proxying</a></td>
+      <td class="not">not possible</td>
+      <td class="not">not possible</td>
+      <td class="not">not possible</td>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#Reflection">Reflection</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr class="section">
+      <td>Internationalization &amp; Localization</td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#Collation">Collation</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#NumberFormatting">Number Formatting</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#CurrencyFormatting">Currency Formatting</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><a href="https://web.archive.org/web/20161017113720/http://es6-features.org/#DateTimeFormatting">Date/Time Formatting</a></td>
+      <td class="no">not necessary</td>
+      <td class="no">not necessary</td>
+      <td class="yes">required</td>
+    </tr>
+  </tbody>
+</table></p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Sourcecode available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">Github</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>

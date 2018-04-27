@@ -13,7 +13,7 @@
 
   <div class="layout__outer">
     <header class="layout__inner header">
-        <a class="header__site-title" href="/" rel="me">Bran van der Meer</a>
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
 
       </header>
 
@@ -22,13 +22,27 @@
   <p class="small"><small>
     Published <time itemprop="dateCreated" datetime="2013-02-22T00:00+01:00">2013-02-21</time>
   </small></p>
-  <p>So we all want HiDPI graphics on the web now, Apple started it all with Retina screens, and now most high-end Android and Windows devices have a 300+ PPI as well. With this, comes of course the problem of HiDPI graphics. Nobody wants 72 DPI graphics on their 300+ PPI screen.
+  <p><p>So we all want HiDPI graphics on the web now, Apple started it all with Retina screens, and now most high-end Android and Windows devices have a 300+ PPI as well. With this, comes of course the problem of HiDPI graphics. Nobody wants 72 DPI graphics on their 300+ PPI screen.</p>
 
-And to make it interesting, I think most of you have to worry about IE 7 & 8 support, at least I do. It’s what makes our jobs interesting, right?
+<p>And to make it interesting, I think most of you have to worry about IE 7 & 8 support, at least I do. It’s what makes our jobs interesting, right?</p>
 
-Translating this situation to the web, there are several ways to go. One of the easy ways is to create images that are twice as big, which generates 4 times the size. If you’ve got a photo, you might be forced into this solution. But we are talking about icons. For those kind of graphics, you could work with a library like Raphaël. Say your icon is suitable for it, this will get it on screen in all required browsers in no time. But, they do have performance drawback. Suddenly your visitors have to download an extra javascript library. And depending on whether you put it into head or body, either your page will load slower, or your page will become visible without the icons, which will appear later. I don’t want all that.
+<p>Translating this situation to the web, there are several ways to go. One of the easy ways is to create images that are twice as big, which generates 4 times the size. If you’ve got a photo, you might be forced into this solution. But we are talking about icons. For those kind of graphics, you could work with a library like Raphaël. Say your icon is suitable for it, this will get it on screen in all required browsers in no time. But, they do have performance drawback. Suddenly your visitors have to download an extra javascript library. And depending on whether you put it into head or body, either your page will load slower, or your page will become visible without the icons, which will appear later. I don’t want all that.</p>
 
-</p>
+<p>Continuing on how I do most of my CSS3 fallbacks, we can do a similar thing here. First, we write CSS3 code, then we target IE with a class coming from a <a href="https://www.paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/">conditional comment</a>. Say we have a crimson arrow-ish icon. And since it’s our lucky day today, the icon is so simple, that we can reproduce it with only CSS.</p>
+
+<p>But the designer didn’t sleep well last night, and this morning during our daily stand-up he announced the icon needed more pop. And thus we must iterate. This time however, the designed icon is not so simple, and we can’t get away with CSS-only trickery. We’re going to need a vector-based solution.</p>
+
+<p>Applying my usual CSS3 fallback technique to an SVG file as a CSS background, should be easy. It loads the fallback .png in IE 7 & 8, and since it’s vector it can be enlarged without loss of quality. It also has advantages over using @font-face for vectors; the icon can use as many colors as you want, and can be in any ratio, not just the square-ish a font requires.</p>
+
+<p>The 72 DPI .png image is enough for IE 7 & 8, since they’re not browsers typically run on HiDPI screens. Android 2.3 (which has about half of Android’s market share at the time of writing) might be a problem though, depending on your visitors. But the rest of the world can see your vectors nicely. See caniuse.com for <a href="https://caniuse.com/#feat=svg-css">detailed svg in css browser support</a>.</p>
+
+<p>And I’ll admit it right away; when your project has any kind of feature detection system (like Modernizr), I’d go with a .svg class on my element to place the .png, instead of an .ie class. But, if you’re only using svg, I’d prefer to have my conditional .ie classes, since I need them all the time anyway. If you have neither conditional .ie classes, or feature detection, a css-fallback technique <a href="http://pauginer.com/post/36614680636/invisible-gradient-technique">like this one</a> is a nice solution as well.</p>
+
+<p>Additionally, I’d like to state, that the SVG syntax is not that hard to master, and if you’ve got an icon that’s not too complex, you can always write the SVG by hand, it’s just drawing with XML. It’ll create a much more optimized file than what you’d copy from your designer.</p>
+
+<p>I find that, personally, I’m better writing code than I’m using Illustrator or <a href="https://inkscape.org/">Inkscape</a> to create an .svg file. My designer of course isn’t, and he’ll gladly use those tools. The .svg exports from Illustrator aren’t that nice, for one it doesn’t understand relative vs absolute paths. You’ll want relative ones when you’re going to manipulate or animate elements. Inkscape has a setting for that, where you can choose between relative/absolute paths, which’ll save you a lot of headaches.</p>
+
+<p>Which brings me to my last tip: optimizing svg files. Since Inkscape is build around the SVG standard, its Save as “Optimized SVG file” is pretty neat. I advise using it on all your SVGs, do check the results manually though, and you’ll learn SVG syntax in the process.</p></p>
 </main>
 
     <footer class="layout__inner footer">
