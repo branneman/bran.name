@@ -4,7 +4,7 @@
   "description": "The sourcecode for the https://bran.name/ website (Static site implementation)",
   "scripts": {
     "start": "gulp dev",
-    "release": "gulp release"
+    "deploy": "gulp deploy"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,9 @@
     ]
   },
   "devDependencies": {
-    "aws-sdk": "^2.104.0",
     "contentful": "^4.6.1",
     "dotenv": "^4.0.0",
+    "gh-pages": "^1.1.0",
     "glob": "^7.1.2",
     "gulp": "github:gulpjs/gulp#4.0",
     "http-server": "^0.10.0",

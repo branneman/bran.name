@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
 const contentful = require('contentful')
 const dateFilter = require('nunjucks-date-filter')
 const env = require('dotenv').load().parsed
 const fs = require('fs')
+const ghpages = require('gh-pages')
 const glob = require('glob').sync
 const gulp = require('gulp')
 const httpServer = require('http-server')
@@ -26,14 +26,6 @@ const config = Object.freeze({
     contentful: {
       space: env.CONTENTFUL_SPACE,
       accessToken: env.CONTENTFUL_ACCESSTOKEN
-    },
-    s3: {
-      region: env.AWS_REGION,
-      bucket: env.AWS_BUCKET,
-      credentials: {
-        key: env.AWS_ACCESS_KEY_ID,
-        secret: env.AWS_SECRET_ACCESS_KEY
-      }
     }
   },
   src: `${__dirname}/src`,
@@ -102,37 +94,6 @@ gulp.task('_download-content', () => {
 gulp.task('_remove-temporary-files', cb => {
   fs.unlinkSync(config.datafile)
   cb()
-})
-
-/**
- * Sub-task implementation: Upload `dist/` contents to S3 bucket
- * @private
- */
-gulp.task('_upload', () => {
-  const s3 = new AWS.S3({
-    apiVersion: '2006-03-01',
-    params: {
-      region: config.env.s3.region,
-      Bucket: config.env.s3.bucket,
-      credentials: config.env.s3.credentials
-    }
-  })
-
-  const uploadFile = file =>
-    new Promise((resolve, reject) => {
-      if (!fs.statSync(file).isFile()) return resolve()
-
-      s3.putObject(
-        {
-          Body: fs.readFileSync(file, 'utf8'),
-          Key: path.relative(config.dist, file),
-          ContentType: mime.lookup(file)
-        },
-        (err, data) => (err ? reject(err) : resolve(data))
-      )
-    })
-
-  return Promise.all(glob(config.glob.dist).map(uploadFile))
 })
 
 /**
@@ -256,6 +217,27 @@ gulp.task('_server', () => {
 })
 
 /**
+ * Sub-task implementation: Upload `dist/` contents to S3 bucket
+ * @private
+ */
+gulp.task('_deploy', cb => {
+  ghpages.publish(
+    config.dist,
+    {
+      user: {
+        name: 'Bran van der Meer',
+        email: 'branmovic@gmail.com'
+      },
+      message: 'Deploy'
+    },
+    err => {
+      if (err) throw err
+      cb()
+    }
+  )
+})
+
+/**
  * Sub-task: Run a build
  * @private
  */
@@ -287,7 +269,7 @@ gulp.task('dev', gulp.series('_build', gulp.parallel('_server', '_watch')))
 /**
  * Public Batch task: Run a build and release to S3
  */
-gulp.task('release', gulp.series('_build', '_upload'))
+gulp.task('deploy', gulp.series('_build', '_deploy'))
 
 /**
  * Public Batch task: Run a build from `src` to `dist`
