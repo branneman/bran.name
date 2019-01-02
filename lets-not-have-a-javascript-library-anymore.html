@@ -5,7 +5,7 @@
   <title>Let&#39;s not have a JavaScript library anymore</title>
   <meta name="format-detection" content="telephone=no"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
   <link rel="stylesheet" href="/static/css/all.css">
   <link rel="shortcut icon" href="/static/img/favicon.ico">
 </head>
@@ -37,7 +37,7 @@ In selector engine land, <a href="http://sizzlejs.com/">Sizzle</a> is the most p
 
 <p>So those engines are a lot of code, which we <a href="http://caniuse.com/#search=querySelector">only need for IE &lt;= 7</a>. Somehow we'll have to include it for IE &lt;= 7, but not for all the other browsers. Polyfill to the rescue! A while ago when I needed exactly that, it wasn't there yet, so I put my own polyfill with Sizzle together, you can find it <a href="https://gist.github.com/1200441">as a Gist on Github</a>. It's really only the engine with a wrapping function around it, if the spec is already implemented by the current browser, it doesn't do anything at all, but if it isn't implemented, it polyfills querySelector() and querySelectorAll() with Sizzle immediately behind the functions.</p>
 
-<h2><strong>Events</h2>
+<h2>Events</h2>
 Events are more easy, you can just implement those yourself, or at least you don't have to steal a lot of code. There are of course 2 event models, W3C's and Microsoft's. The most simple solution would be to take <a href="http://ejohn.org/projects/flexible-javascript-events/">John Resig's addEvent()</a>, it'll most likely suffice. And I wouldn't even include removeEvent() until you need it, I very rarely use it.</p>
 
 <p>And depending on whether you will use it or not, you might miss custom events as well. This boils down to implementing the <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer pattern</a> in JavaScript. You can build one around the addEvent() you just added, or write seperate functions for it, whatever you like. I slightly prefer to keep those things together, since its almost the same anyway. For a plain observer pattern I'm going to link to <a href="http://www.dustindiaz.com/javascript-observer-class/">Dustin Diaz' Observer</a>, it's a clear and simple implementation.</p>
