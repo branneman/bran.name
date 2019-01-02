@@ -28,7 +28,7 @@
     "dotenv": "^4.0.0",
     "gh-pages": "^1.1.0",
     "glob": "^7.1.2",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "^4.0.0",
     "http-server": "^0.10.0",
     "mime": "^1.4.0",
     "nunjucks": "^3.0.1",
