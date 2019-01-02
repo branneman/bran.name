@@ -229,7 +229,7 @@ gulp.task('_deploy', cb => {
     {
       user: {
         name: 'Bran van der Meer',
-        email: 'branmovic@gmail.com'
+        email: 'bran.van.der.meer@protonmail.com'
       },
       message: 'Deploy'
     },
