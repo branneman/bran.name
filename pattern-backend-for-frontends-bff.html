@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pattern: Backend for Frontends (BFF)</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>Pattern: Backend for Frontends (BFF)</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2023-03-21T20:00+02:00">2023-03-21</time>
+  </small></p>
+  <p><strong>Disclaimer</strong>: None of what is written here is new, and none of these things are my own ideas. These ideas are all from other people. This article is only a summary of what other articles already specify. This article is a useful overview of the current thinking. See sources at the end for the original works.
+
+<h2>Why</h2>
+
+<ol>
+  <li>
+    <p><strong>Multiple clients, multiple user experiences</strong></p>
+    <p>
+      A web app and a mobile app have conflicting requirements on a server. One
+      or multiple BFF’s can be used to isolate these requirements into their own
+      services, each servicing their own client. In other words, the BFF pattern
+      is useful when you want to avoid customising a single backend for multiple
+      interfaces.
+    </p>
+    <ul>
+      <li>
+        As a result, each BFF can be smaller, less complex and likely faster
+        than a generic backend that tries to satisfy the requirement for all
+        interfaces.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Team autonomy</strong></p>
+    <p>
+      When a BFF is used because there’s a client-side/server-side team
+      boundary, it often results in further decoupling the teams (which can be
+      an advantage or a disadvantage!). This team autonomy has 2 effects:
+    </p>
+    <ul>
+      <li>
+        The server-side API’s developed by server-side developers then have to
+        cater less to the client-side developers’ needs, which aids reuse and
+        separation of concerns. The ‘backend’ services become purely business
+        logic, separated from the UI code.
+      </li>
+      <li>
+        The BFF service, developed by client-side developers, is 100% catered to
+        the client-side app needs, which increases efficiency and specificity.
+        If the client-side developers want to decide GraphQL is a better choice
+        than what the microservices internally use, they can pivot quickly by
+        themselves.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>
+      <strong>Web-specific requirements</strong> (UI as a separate concern, UI
+      loose coupled)
+    </p>
+    <p>
+      Serving a web app can create very specific requirements for the backend,
+      just an API server might not suffice for a good UX. A web server that is
+      capable of all HTTP features and serving HTML in just the right way is
+      probably a completely separate concern, even if it’s just 1 client. When
+      you want to have (the option of) (partial) server-side rendering, the BFF
+      is the obvious place to do this.
+    </p>
+    <ul>
+      <li>
+        As a result the business logic and downstream services can be
+        implemented as general purpose API’s.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Multiple services to call</strong></p>
+    <p>
+      When working in a microservice context where the ‘backend’ isn’t a single
+      service, it makes sense for a client-side application to not call multiple
+      different services. There’s various reasons for that; less services to
+      expose publicly, less code and less complexity in the browser, better
+      performance without the added network latency and client hardware
+      limitations, less different API protocols to support from a browser
+      context (e.g. a microservice landscape which has SOAP, REST and gRPC).
+    </p>
+  </li>
+</ol>
+
+<h2>Why not</h2>
+
+<ul>
+  <li>
+    The BFF pattern may not be suitable when only one interface is used to
+    interact with the backend, and there’s no need for specific HTTP/HTML
+    rendering capabilities.
+  </li>
+  <li>
+    The BFF pattern is probably also not suitable when there’s no team boundary
+    between the client-side developers and server-side developers. When
+    client-side developers own the exposed services as well, the server-side
+    functionality required for a good user experience, can be implemented in
+    that way without a BFF.
+  </li>
+  <li>
+    When dealing with multiple user experiences, a concern is too much code
+    duplication between different BFFs.
+  </li>
+</ul>
+
+<h2>What</h2>
+
+<ul>
+  <li>
+    BFF is a variant of the <strong>API Gateway</strong> pattern, but it also
+    provides an additional layer between microservices and each client type
+    separately. Instead of an API, the BFF can serve HTML over HTTP as well,
+    it’s not specifically an API such as REST, GraphQL, etc.
+  </li>
+  <li>
+    Conceptually, you should think of the user-facing application as being two
+    components: a client-side application and a server-side component (the BFF).
+  </li>
+  <li>
+    The BFF is a conceptual solution, nothing mandates the
+    fetching/cleaning/aggregating logic to be located in a specific location. It
+    can be a dedicated deployment unit or a plugin in an API Gateway.
+  </li>
+  <li>
+    The BFF pattern mainly consists of these 3 requirements:
+    <ol>
+      <li>
+        A server-side component (”the BFF”), capable of the following:
+        <ul>
+          <li>
+            rendering HTML, either a fully server-side rendered website, or only
+            the error pages for an SPA
+          </li>
+          <li>serving compiled static files, such as CSS and JS</li>
+          <li>
+            full control of HTTP features (redirects, CSP, HSTS, CORS,
+            downloads)
+          </li>
+        </ul>
+      </li>
+      <li>
+        The client-side developers own the responsibility for this server-side
+        component
+      </li>
+      <li>
+        The only server-side endpoint the client-side code calls, is the BFF.
+      </li>
+    </ol>
+  </li>
+  <li>
+    The BFF is tightly coupled to a specific user experience, and is typically
+    maintained by the same team as the user interface.
+  </li>
+</ul>
+
+<h2>How</h2>
+
+<ul>
+  <li>
+    For an SPA, the server-side component could be responsible for implementing
+    the only API called by the client, as well as miscellaneous HTTP features
+    such as redirecting to the Auth services, serving the SPA HTML, serving
+    static files, offering downloads, error pages, etc.</li>
+    <li>When there’s multiple
+    API’s to be called for a client app, it makes sense to put these calls into
+    the BFF so a (specific) single domain model can be created.</li>
+    <li>Frontend-focused server-side services should only contain client-specific
+    logic and behaviour. General business logic and other global features should
+    be managed elsewhere.</li>
+    <li>Node.js is a common technology choice for the BFF
+    pattern, as JavaScript is the language used in the browser, and thus often
+    the best known by frontend developers.</li>
+    <li>A good example of an integrated
+    technology is Next.js, a React-focussed framework with the capability of
+    <a
+      href="https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#when-does-getserversideprops-run"
+      >rendering React components completely or partially on the server</a
+    >.
+    <ul>
+      <li>
+        This leads to less loading states on the client, as the server-side code
+        is quicker at getting data from backend services when they’re colocated
+        in a cluster. It also leads to less code on the client side, less
+        complexity and a more performant UI.
+      </li>
+      <li>
+        As of 2022, React is moving towards a server-first framework, to enable
+        this even further.
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Sources</h2>
+
+<ul>
+  <li>
+    The original pattern:
+    <a href="https://samnewman.io/patterns/architectural/bff/"
+      >https://samnewman.io/patterns/architectural/bff/</a
+    >
+  </li>
+  <li>
+    <a href="https://www.thoughtworks.com/insights/blog/bff-soundcloud"
+      >https://www.thoughtworks.com/insights/blog/bff-soundcloud</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends"
+      >https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern"
+      >https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://medium.com/mobilepeople/backend-for-frontend-pattern-why-you-need-to-know-it-46f94ce420b0"
+      >https://medium.com/mobilepeople/backend-for-frontend-pattern-why-you-need-to-know-it-46f94ce420b0</a
+    >
+  </li>
+  <li>
+    <a href="https://blog.frankel.ch/backend-for-frontend/"
+      >https://blog.frankel.ch/backend-for-frontend/</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://www.linkedin.com/pulse/backend-frontend-who-owns-api-orchestration-layer-ashutosh-sharma/"
+      >https://www.linkedin.com/pulse/backend-frontend-who-owns-api-orchestration-layer-ashutosh-sharma/</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://www.codemag.com/Article/2203081/A-Deep-Dive-into-the-Back-End-for-Front-End-Pattern"
+      >https://www.codemag.com/Article/2203081/A-Deep-Dive-into-the-Back-End-for-Front-End-Pattern</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://christianlydemann.com/the-complete-guide-to-backend-for-frontend-bff/"
+      >https://christianlydemann.com/the-complete-guide-to-backend-for-frontend-bff/</a
+    >
+  </li>
+  <li>
+    <a
+      href="https://www.mobilelive.ca/blog/why-backend-for-frontend-application-architecture"
+      >https://www.mobilelive.ca/blog/why-backend-for-frontend-application-architecture</a
+    >
+  </li>
+  <li>
+    <a href="https://www.youtube.com/watch?v=TQQPAU21ZUw">Data Fetching with React Server Components, by Dan Abramov & Lauren Tan</a> (57:19)
+  </li>
+</ul>
+</p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Sourcecode available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">Github</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>
