@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/branneman/bran.name-staticsite.git"
+    "url": "git+ssh://git@github.com/branneman/bran.name.git"
   },
-  "author": "Bran van der Meer <branmovic@gmail.com>",
+  "author": "Bran van der Meer <bran.van.der.meer@protonmail.com>",
   "license": "ISC",
   "babel": {
     "presets": [

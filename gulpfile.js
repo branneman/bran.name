@@ -270,7 +270,7 @@ gulp.task('_watch', () => gulp.watch(config.glob.src, gulp.series('_build')))
 gulp.task('dev', gulp.series('_build', gulp.parallel('_server', '_watch')))
 
 /**
- * Public Batch task: Run a build and release to S3
+ * Public Batch task: Run a build and release to GH Pages
  */
 gulp.task('deploy', gulp.series('_build', '_deploy'))
 
