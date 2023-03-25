@@ -4,6 +4,7 @@
     {% for article in data.article %}
       <li>
         <em class="publications__pubdate">{{ article.fields.published | date('YYYY-MM-DD') }}</em>
+        -
         <a href="/{{ article.fields.url }}.html">{{ article.fields.title }}</a>
       </li>
     {% endfor %}
