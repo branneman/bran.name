@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Two-Part code review</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-13MHP8Y9HC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-13MHP8Y9HC');
+  </script>
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>The Two-Part code review</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2023-03-23T16:00+01:00">2023-03-23</time>
+  </small></p>
+  <p><p>This is the article version of a video I've made: <a href="https://www.youtube.com/watch?v=7HCTwjf_190">The Two-Part code review</a> (12:27).</p>
+
+<p>Code quality is a crucial aspect of software development. I define code quality as <em>how easy it is to change and maintain the code over time</em>. One of the biggest problems in our industry is that code slowly becomes harder to change over time, and I think it's our own fault as software engineers.</p>
+
+<p>Most teams can easily manage a green-field project for the first half year, but after two years, it becomes unwieldy, and parts of the code have become very costly to refactor and make changes to. Let's explore how to prevent our code from rotting, from becoming a big ball of mud, and how to keep it maintainable and easy to change.</p>
+
+<p><strong>A good code review consists of two parts: Talking and Line-by-line</strong>. The first part is more important than the second part. In the first part, face-to-face communication is crucial, either two people behind a desk, or a video call <em>with cameras on</em>. In addition, the code author should rotate who their code reviewer is. As humans, we're biased towards finding the easiest path forward, so we tend to pick the same reviewer again and again, once we've figured out who will give us the least resistance on our merge request.</p>
+
+<h2>Part 1: Talking</h2>
+<p>The Talking Part is about explaining how the author understood the problem, their mental model of the solution, and then ask for a review on code quality topics (such as Abstractions/Interfaces, Separation of Concerns, and Coupling). The reviewer does the same thing from their perspective: ask the author to explain how they understand the problem, what solutions they came up with, and why they picked a specific solution over other potential solutions. The reviewer should be asking <em>why</em> the author solved the problem the way they did.</p>
+
+<p>As the author, you might want to prepare this part so you have a clear story to tell and are able to answer questions. You can try to answer these questions and write them down in your note-taking system (by the way, do you use <a href="https://www.notion.so/">Notion</a> or <a href="https://obsidian.md/">Obsidian</a> yet?).</p>
+
+<p>A lot of mistakes are made while understanding a problem or while picking the right solution, it's also quite common to forget acceptance criteria if the user story is somewhat big. The beauty of the Talking Part is that you can even do some of it before you start writing code. Validating how you understand the problem, how you intend to solve it and what the key tasks are doesn't need written code, that's asking for <em>a review on your thinking</em>.</p>
+
+<p>Arguably, the most important topics for code quality are these things:</p>
+<ul>
+  <li><strong>Abstractions, Interfaces</strong>: <br>why these functions, names/arguments/return types? why these module/class names? why these interfaces? isn't this a leaky interface?</li>
+  <li><strong>Separation of Concerns</strong>: <br>why these concerns? why not split this up further? why not combine those things?</li>
+  <li><strong>Coupling</strong>: <br>how does the data flow? what is coupled, and how (loose vs. tight)? why? is that a <em>reasonable</em> amount of coupling for this? why not couple this to a generic data structure instead of a function or module?</li>
+</ul>
+
+<p>Worth mentioning as well, is that <a href="https://www.youtube.com/watch?v=vCPv4WjCA3s">Test-driven Development</a> will force you think about these topics while writing the test (so before writing the code), and thus yields higher quality code.</p>
+
+<p>As a reviewer, this is where you <em>really</em> add value, this is the non-optional part where you need to pay attention. If you want to skip something, skip the line-by-line, not the talking! This interaction between humans is what causes high code quality on the long run, it prevents code rot.</p>
+
+<p>As software engineers, our job is not only to "build the feature", but also to <strong>build a system that will last</strong>. This is how you do that. It's not optional. Yes, our short-term priority is to add value to your employer and customers/users. But the long-term part of that is making sure you add this value in such a way, so that you can keep adding value in the future at a reasonable cost.</p>
+
+<h2>Part 2: Line-by-line</h2>
+<p>The Line-by-line Part of the code review is the thing most people are already doing. As an author, it's important to do your due diligence: linting has no warnings/errors, the tests are green, the code has been committed into a separate branch, the branch name makes sense, the commit messages make sense, and the merge request or pull request has been created.</p>
+
+<p>As a reviewer, read all the code line-by-line and judge it based on its correctness, security, and readability. Don't read it like a book cover-to-cover, read it in a logic way, I personally love the follow-the-data approach to reading code.</p>
+
+<p>I like <a href="https://www.dein.fr/posts/2015-02-18-maslows-pyramid-of-code-review">Maslow's pyramid of code review</a> by Charles-Axel Dein (it's not perfect, but it is helpful). Use it to prioritise your comments; if there’s one or more correctness issues, don’t add comments on readability (yet), first the more important things.</p>
+
+<p>It's ok to have multiple phases in a code review, and adhering to a very structural and methodical way of reviewing (like with this pyramid) will make sure you won't forget important things before mentioning less important things. That being said, you don't want to give 100 (or more!) comments on a merge request anyway, that'll hurt the author. That's not what being a nice human is about. If you feel like you have a 100 comments you could make, start pair programming together instead.</p>
+
+<p>Lastly, use your version control system/platform like GitLab or GitHub to record your comments, don't send them over chat, email or any different way. This written record of history is useful for onboarding and other forms of knowledge transfer. I always advise people who are onboarding to read the last 5 merge requests from a team to get a feel for the patterns that are used. Being able to read that stuff is highly valuable.</p>
+
+<h2>TL;DR</h2>
+<p>Let me emphasize again that to get high quality code, we need to talk about code. Doing a code review is not reading code by yourself. It's absolutely crucial to hear the train of thought from the author, in person, to get the bigger picture. By following the workflow presented here, we can build systems that will last.</p>
+</p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Source code available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">GitHub</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>
