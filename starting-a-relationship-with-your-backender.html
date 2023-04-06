@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Starting a relationship with your backender</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-13MHP8Y9HC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-13MHP8Y9HC');
+  </script>
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>Starting a relationship with your backender</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2012-03-23T16:00+02:00">2012-03-23</time>
+  </small></p>
+  
+  <p>⚠️ Wait up! The article you're viewing was published a long time ago (in internet years),
+    it may be irrelevant or completely incorrect by now. Thread carefully!</p>
+  <p><p>I'm a frontender who works directly in the back-end template engines whenever possible. This makes me run into all the gray area in between front-end and back-end. This is the right place where quality and neat code should be made, but where often problems arise due to lack of inter-developer communication.</p>
+
+<p>I work like this mostly because I've been a (evil) backender myself for a big part of my career, and I've worked with a lot of the template engines already. And maybe I like to get to know all the dirty little secrets of the back-end implementation as well.</p>
+
+<p>The biggest advantage of being responsible for the code in the templates engine is being in complete control over how your code will end on the web. The backender doesn't have to translate your static code to a template engine language anymore, which most of them don't like anyway. And you won't forget about that one obscure use case your code will live in. Win-win.</p>
+
+<p>But!</p>
+
+<p>You will have to infiltrate the domain of your backender. They will not allow you access to <strong>their</strong> template engine lightly. So you're going to have to explain what, why and how you're going to do it.</p>
+
+<p>Take for example a page that has a table and some filters. Often the backender did not yet think about how the filter feature will actually work, but they did already write some HTML for it. There could be a redirect with JavaScript, triggered by a onchange event on a <code>select</code> element. But you could also simulate a HTTP post so you can put a <code>form</code> element around it, which would be better for accessibility. Both solutions require implementation work from the frontender and the backender, depending on the actual solution. This means that both of you have a big stake in what the final solution will be.</p>
+
+<p>This makes you both dependent of eachother, and to reach a comfortable conclusion you will have to cooperate effectively. If you can't reach an agreement, the user experience will be hurt.</p>
+
+<p>My approach to these kind of situations is trying to think of a few possible solutions that all make sense to you, and then making the backender choose. This way you give them the feeling of being in charge, but you are actually censoring the choices you give them. You can introduce the problem to them any way you want to, giving you the advantage. When they will be implementing your code, you'll get a bug report for everything you or they did not foresee, and everything you did foresee, but did not mention to them.</p>
+
+<p>To ease communication between you two, start with the small things. Make sure you are not too far away. Don't hesitate to walk to their desk and talk to them, don't try to solve everything over mail or chat. They are definitely more afraid of you than you are of them. Drink a beer with them on friday at the office! (This will cause some persuasion in most cases, but definitely worth the while!)</p></p>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Source code available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">GitHub</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>
