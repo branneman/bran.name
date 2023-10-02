@@ -211,6 +211,15 @@ gulp.task("_copy-images", (cb) => {
 });
 
 /**
+ * Sub-task implementation: Copy JavaScript
+ * @private
+ */
+gulp.task("_copy-js", (cb) => {
+  shell.cp("-R", `${config.src}/static/js`, `${config.dist}/static`);
+  cb();
+});
+
+/**
  * Sub-task: HTTP Server for development
  * @private
  */
@@ -255,6 +264,7 @@ gulp.task(
     "_render-templates",
     "_render-pages",
     "_compile-css",
+    "_copy-js",
     "_copy-images",
     "_remove-temporary-files"
   )
