@@ -143,6 +143,43 @@ blockquote {
   background: #f4cccc;
   color: #e06666;
 }
+#five-dysfunctions,
+#five-dysfunctions--results-block {
+  display: none;
+}
+#five-dysfunctions {
+  border: 2px dotted #446;
+  padding: .5em;
+}
+#five-dysfunctions--question-block :first-child {
+  margin-top: 0;
+}
+.five-dysfunctions--answer-block button {
+  display: block;
+  margin: 0 0 1em 1em;
+  padding-left: .5em;
+  padding-right: .5em;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.five-dysfunctions--results h2 {
+  margin-top: 0;
+}
+.five-dysfunctions--results div p {
+  display: inline-block;
+  margin: 0;
+}
+#five-dysfunctions--results__trust,
+#five-dysfunctions--results__conflict,
+#five-dysfunctions--results__commitment,
+#five-dysfunctions--results__accountability,
+#five-dysfunctions--results__results {
+  font-weight: bold;
+}
+.five-dysfunctions--results-interpretation p:not(:first-child) {
+  margin: 0;
+}
 .aside__header {
   margin-bottom: 0.5em;
   border-bottom: 1px solid #aac;
