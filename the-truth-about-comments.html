@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Truth About Comments</title>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,500|IBM+Plex+Serif">
+  <link rel="stylesheet" href="/static/css/all.css">
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+</head>
+<body class="page-article">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-13MHP8Y9HC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-13MHP8Y9HC');
+  </script>
+
+  <div class="layout__outer">
+    <header class="layout__inner header">
+        <a class="header__site-title" href="/" rel="me">bran.name</a>
+
+      </header>
+
+    <main class="layout__inner">
+  <h1>The Truth About Comments</h1>
+  <p class="small"><small>
+    Published <time itemprop="dateCreated" datetime="2023-11-02T16:00+01:00">2023-11-02</time>
+  </small></p>
+  <p>This is the article of a video I’ve made: <a href="https://www.youtube.com/watch?v=hxsx3vbf-QQ">The First Rule of Comments in Code</a> (10:55).</p>
+
+<p>The problem with comments in your codebase, is that there’s a million ways to do it wrong, and only a few ways to do it right. In other words, it is very hard to write a good comment. That may sound silly: I mean, how is it hard to write a comment, right? First I’ll look at ways in which comments can be unhelpful, then, let’s see what we can do about it.</p>
+
+<h2>Unhelpful</h2>
+<p>Unfortunately, it’s quite easy to end up with unhelpful comments. Let’s look at the most common reasons for that.</p>
+
+<h3>Comments can lie</h3>
+<p>It’s common for comments to get outdated. Comments are like dead code: if it doesn’t run, it doesn’t have to be correct. So sooner or later, it will become incorrect.</p>
+<p>At the time of writing, a comment is usually correct. But when the system (the code around it) changes, the comment usually does not change with it. Sometimes the comment is no longer true, because it didn’t change with the implementation. And sometimes the code is moved, but the comment is not moved. You end up with a comment that’s unrelated to it’s context.</p>
+<p>Unlike code, you can’t unit-test a comment, you can’t ensure it’s correctness. You don’t have tests and linting to check comments for correctness. So if your comments get a bug, it won’t be noticed.</p>
+<p>So what happens when you come across an outdated comment? At best, you spot the lie and are slightly confused for a bit. At worst, you assume it’s true, and go further in the wrong direction.</p>
+
+<h3>A comment can be just noise</h3>
+<p>These types of comments are not lying, they’re correct. But they’re not helpful, because they’re not giving you any new information.</p>
+<p>We’ve all seen these types of comments:</p>
+<pre><code class="language-js">// Show next question after some time (milliseconds)
+setTimeout(() => setShowingQuestion(true), 1500)</code></pre>
+<p>or:</p>
+<pre><code class="language-js">// Done? => Show results
+if (isDone(gameState) && showingQuestion) {
+  const results = getResults(gameState as Game)
+  // ...
+}</code></pre>
+<p>These comments are absolutely useless, they add no information. Yes, also the 'milliseconds' part, because it can't be seconds, that would we way too long. But mostly, I would argue that <code>setTimeout</code> is assumed knowledge, it's standard library.</p>
+
+<h3>Commented code is probably broken</h3>
+<p>When you’re looking at commented code, you don’t know if it works, how old it is, or why it’s commented. There’s a good chance it doesn’t work anymore if its older than a few weeks.</p>
+<p>Commented code will stop working because it hasn’t changed, while it’s environment has changed. The code around it has evolved away from that old state.</p>
+<p>And even if it does work, is that how you want to solve the problem <em>right now</em>? Maybe you’ve started using different patterns in your codebase, maybe you’ve learned things in the mean time. The cost of fixing the commented code is probably higher than rewriting the code.</p>
+
+<h2>The First Rule</h2>
+<p>Having seen these ways in which a comment can be (or become) unhelpful, the first rule of comments is <strong>Don’t Write Comments</strong>.</p>
+<p>That may sound extreme, but it’s actually industry practice: many books, professionals and experts have been stating this for decades.</p>
+<p>Now there are a few exceptions to the things I’m saying, but I would say it’s true for 95% of the cases. Not all comments are bad. But most are.</p>
+<p>Comments only exist in programming languages, because our programming languages are not capable of expressing everything. If you could express it in code, you would. If you can’t express it in code, you unfortunately have to resort to writing a comment.</p>
+
+<h2>How to avoid comments</h2>
+<p>I’ve compiled a list of 6 heuristics you can use to avoid comments.</p>
+
+<h3>1. Code that needs a comment, needs to be rewritten</h3>
+<p>So that it doesn’t need a comment anymore.</p>
+<p>This is not always true, but mostly it is. We should always try to put the things in code. When you have the urge to write a comment, I recommend you to think about what information you want to convey, and then try and encode that information in the code itself.</p>
+<p>You could for example, rename a variable, because you’ve just learned your variable name wasn’t good enough. It wasn’t good enough, because you needed to add a comment to it.</p>
+<p>You want your code to read like a comment, without it having comments.</p>
+
+<h3>2. Move information somewhere else</h3>
+<p>Often this means move the information to a variable/module/class name, sometimes it means move the information to documentation. I took the following example from <a href="https://www.youtube.com/watch?v=K9ohUuZhWnY">my video on naming things in code</a> (13:22).</p>
+
+<p>Before:</p>
+<pre><code class="language-js">// available length = max - space - prefix
+const availableLength = 8 - 1 - prefix.length
+</code></pre>
+<p>After:</p>
+<pre><code class="language-js">const MAX_LENGTH = 8
+const SPACE_LENGTH = 1
+const availableLength = MAX_LENGTH - SPACE_LENGTH - prefix.length</code></pre>
+<p>Yes, it’s more code, but we’re not paying by the byte here luckily. You can also sometimes move information to your type system:</p>
+
+<p>Before:</p>
+<pre><code class="language-js">// returns null on no match
+const indexOf = (array, search) => {
+  const result = array.indexOf(search)
+  if (result === -1) return null
+  return result
+}</code></pre>
+<p>After, notice the <code>null</code> type:</p>
+<pre><code class="language-ts">
+function indexOf&lt;T = null&gt;(array: Array&lt;T&gt;, search: T) {
+  const result = array.indexOf(search)
+  if (result === -1) return null
+  return result
+}</code></pre>
+<p>Because the <code>null</code> is in the type signature, TypeScript will complain if you decide to return <code>-1</code> instead of <code>null</code>. But the comment will become out of date and incorrect.</p>
+
+<h3>3. The information is out of date</h3>
+<p>When you want to write a comment to explain some code, ask yourself: how quickly can this information become out of date? If a comment is just about one line of code, the chance of it being correct is somewhat reasonable. But if a comment is about multiple lines, its quite easy to update those lines, but not update the comment.</p>
+<p>So especially when you want to write a comment about multiple lines of code, stop yourself. Ask yourself: how can I put this in code instead?</p>
+
+<h3>4. There is no information</h3>
+<p>It may sound silly, but very often, a comment doesn’t give you new information, because you already have access to the information in the code next to it. I’ve shown this example before:</p>
+<pre><code class="language-js">// Show next question after some time (milliseconds)
+setTimeout(() => setShowingQuestion(true), 1500)</code></pre>
+<p>The function is named pretty well and <code>setTimeout</code> is a JavaScript standard library function. Do you really need this comment? My answer is no.</p>
+<p>If you’ve just written a comment, or when looking at existing comments, ask yourself: what is this actually telling me? What is the information?</p>
+<p>If there’s too little, or no information at all: delete it, really.</p>
+
+<h3>5. I need to explain this complexity</h3>
+<p>No, you need to fix the complexity, so you won’t need a comment.</p>
+<p>If you can’t, because it’s really that bad or you don't know how to get rid of it, still don't "solve" it with comments: put a markdown file in your source code code next to your file, create actual docs.</p>
+<p>Or add it to wherever your docs are located, or create an architecture diagram, which explains it all. A few comments can’t fix or explain complexity. The bad news with complexity is that it requires hard work to fix.</p>
+<p>Adding a comment to explain complexity is like putting a band-aid on a lost leg.</p>
+<p>Before:</p>
+<pre><code class="language-js">if (!showingQuestion
+    && ac.question.code
+      === qc.answers[qc.answers.length - 1].code) {
+  // ...
+}</code></pre>
+<p>After:</p>
+<pre><code class="language-js">const isCorrect =
+  ac.question.code
+    === qc.answers[qc.answers.length - 1].code
+
+if (!showingQuestion && isCorrect) {
+  // ...
+}</code></pre>
+<p>The code has not functionally changed after the refactor, but (again) a name was introduced (the variable <code>isCorrect</code>) to explain what’s happening while lowering the cognitive load of the <code>if</code> statement at the same time.</p>
+<p>If the complexity is across multiple files, you need different type of documentation, and better codebase design in the long run. I recommend using Test-driven development and Pair programming to keep the cost of change and general code quality under control, because that’s a long game.</p>
+
+<h3>6. If you have the urge to comment code, delete it instead</h3>
+<p>There are all kinds of reasons of why you might have the urge to comment code.</p>
+<p>"I’m not sure I want to delete it yet." For example while you’re still figuring out a solution, just trying out some things.</p>
+<p>"We will or might need this in the future, it’ll be easy to bring it back, just uncomment it."</p>
+<p>But there is a different solution to all these problems: version control. When using a system like Git, you can look up the full history. If you use a UI tool for Git, it probably supports inspecting the history per file for quick access.</p>
+<p>You won’t actually lose anything by deleting, so it’s safe to delete. If you need it back, just use version control.</p>
+<p>But the insight is that you probably won’t need it back, because by then, the code will be so out of date that it’ll be easier to start over. And that’s a good thing, because you’ll write better code now.</p>
+
+<p>That’s it. I hope this was helpful. If you’re feeling like speaking up or discussing this, please do so <a href="https://www.youtube.com/watch?v=hxsx3vbf-QQ">on youtube</a>. Cheers!</p>
+
+<script src="/static/js/highlightjs.min.js"></script>
+<script>hljs.highlightAll();</script>
+</main>
+
+    <footer class="layout__inner footer">
+        <p>Content, typography and development by myself. Source code available on
+  <a href="https://github.com/branneman/bran.name" target="_blank">GitHub</a></p>
+
+      </footer>
+  </div>
+
+</body>
+</html>
