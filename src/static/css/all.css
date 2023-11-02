@@ -3,6 +3,8 @@
 @import 'common/3.typography.css';
 @import 'common/4.layout.css';
 
+@import 'highlightjs.css';
+
 @import '../../components/article/article.css';
 @import '../../components/aside/aside.css';
 @import '../../components/footer/footer.css';
