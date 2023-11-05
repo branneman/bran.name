@@ -6,6 +6,9 @@ const ghpages = require("gh-pages");
 const glob = require("glob").sync;
 const gulp = require("gulp");
 const httpServer = require("http-server");
+const markdown = require("markdown-it")({ html: true }).use(
+  require("markdown-it-anchor")
+);
 const nunjucks = require("nunjucks");
 const path = require("path");
 const postcss = require("postcss");
@@ -35,6 +38,8 @@ const config = Object.freeze({
     templates: `${__dirname}/src/templates/**/*`,
     pages: `${__dirname}/src/templates/pages/**/*`,
     css: `${__dirname}/src/static/css/!(_)*.css`,
+    js: `${__dirname}/src/static/js/!(_)*.js`,
+    md: `${__dirname}/src/static/md/!(_)*.md`,
   },
   datafile: `${__dirname}/dist/data.json`,
 });
@@ -220,6 +225,26 @@ gulp.task("_copy-js", (cb) => {
 });
 
 /**
+ * Sub-task implementation: Render Static Markdown
+ * @private
+ */
+gulp.task("_render-md", (cb) => {
+  shell.cp("-R", `${config.src}/static/md`, `${config.dist}/static`);
+
+  glob(config.glob.md).map((filename) => {
+    const fileContents = fs.readFileSync(filename, "utf8");
+
+    const renderedHtml = markdown.render(fileContents);
+
+    const newFileName = path.relative(`${config.src}/static/md/`, filename);
+    const newFilePath = `${config.dist}/static/md/${newFileName}.html`;
+    fs.writeFileSync(newFilePath, renderedHtml);
+  });
+
+  cb();
+});
+
+/**
  * Sub-task: HTTP Server for development
  * @private
  */
@@ -266,6 +291,7 @@ gulp.task(
     "_compile-css",
     "_copy-js",
     "_copy-images",
+    "_render-md",
     "_remove-temporary-files"
   )
 );
