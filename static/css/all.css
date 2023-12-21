@@ -230,13 +230,16 @@ code.hljs {
   background: #f4cccc;
   color: #e06666;
 }
+.authors {
+  color: #aac;
+}
 #five-dysfunctions,
 #five-dysfunctions--results-block {
   display: none;
 }
 #five-dysfunctions {
   border: 2px dotted #446;
-  padding: .5em;
+  padding: 0.5em;
 }
 #five-dysfunctions--question-block :first-child {
   margin-top: 0;
@@ -244,8 +247,8 @@ code.hljs {
 .five-dysfunctions--answer-block button {
   display: block;
   margin: 0 0 1em 1em;
-  padding-left: .5em;
-  padding-right: .5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   font: inherit;
   color: inherit;
   cursor: pointer;
